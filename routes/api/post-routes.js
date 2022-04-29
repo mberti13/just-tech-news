@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const {Post, User} = require('../../models');
+const {Post, User, Vote} = require('../../models');
 
 //get all Posts
 router.get('/', (req, res) =>{
@@ -62,6 +62,15 @@ router.post('/', (req, res) =>{
     });
 });
 
+// * PUT for voting model system
+router.put('/upvote', (req, res) =>{
+    Vote.create({
+        user_id: req.body.user_id,
+        post_id: req.body.post_id
+    })
+    .then(dbPostData => res.json(dbPostData))
+    .catch(err => res.status(err));
+});
 // PUT/UPDATE a post's title
 router.put('/:id', (req, res) =>{
     Post.update(
