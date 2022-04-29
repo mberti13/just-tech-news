@@ -8,6 +8,8 @@ router.get('/', (req, res) =>{
     Post.findAll({
         // * Query Configuration
         attributes: ['id', 'post_url', 'title', 'created_at'],
+        //used to bring new stories to front of feed
+        order: [['created_at', 'DESC']],
         include: [
             {
                 model: User,
@@ -79,6 +81,24 @@ router.put('/:id', (req, res) =>{
         res.json(dbPostData);
     })
     .catch(err =>{
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
+
+//DELETE a post
+router.delete('/:id', (req, res) =>{
+    Post.destroy({
+        where:{
+            id: req.params.id
+        }
+    }).then(dbPostData =>{
+        if(!dbPostData){
+            res.status(404).json({ message: "No post found with this id." });
+            return;
+        }
+        res.json(dbPostData);
+    }).catch(err =>{
         console.log(err);
         res.status(500).json(err);
     });
