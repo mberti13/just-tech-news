@@ -5,6 +5,7 @@
 
 const router = require('express').Router();
 
+const { append } = require('express/lib/response');
 const sequelize = require('../config/connection');
 
 const {Post, User, Comment } = require('../models');
@@ -45,6 +46,11 @@ Post.findAll({
         console.log(err);
         res.status(500).json(err);
     });
+});
+
+// ! Route to link "/login" to 'login.handlebars'
+router.get('/login', (req, res) =>{
+    res.render('login');
 });
 
 module.exports = router;
