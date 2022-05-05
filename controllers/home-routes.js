@@ -5,7 +5,6 @@
 
 const router = require('express').Router();
 
-const { append } = require('express/lib/response');
 const sequelize = require('../config/connection');
 
 const {Post, User, Comment } = require('../models');
@@ -13,6 +12,8 @@ const {Post, User, Comment } = require('../models');
 router.get('/', (req, res) =>{
     // res.render() works with template engine
     // renders homepage.handlebars
+    console.log(req.session);
+
 Post.findAll({
     attributes:[
         'id',
@@ -50,6 +51,12 @@ Post.findAll({
 
 // ! Route to link "/login" to 'login.handlebars'
 router.get('/login', (req, res) =>{
+if(req.session.loggedIn){
+    res.redirect('/');
+    return;
+    
+}
+
     res.render('login');
 });
 
